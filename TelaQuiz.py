@@ -55,7 +55,7 @@ quiz_dados = [
 
 ]
 
-question_one = 0
+questao_atual = 0
 score_user = 0
 
 sg.theme('DarkBlue3')
@@ -73,12 +73,14 @@ layout = [
 Janela_Quiz = sg.Window("Quiz", layout)
 
 def update_quiz():
-    global question_one
-    question_dados = quiz_dados[question_one]
+    global questao_atual
+    question_dados = quiz_dados[questao_atual]
 
     Janela_Quiz["question"].update(question_dados["question"])
     for i in range(4):
         Janela_Quiz[f"op{i}"].update(question_dados["options"][i]) 
+
+update_quiz()
 
 while True:
     events, values = Janela_Quiz.read()
