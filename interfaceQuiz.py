@@ -5,7 +5,7 @@ import json
 import os
 import time
 
-# --- Dados do Quiz ---
+# --- Dados do Quiz
 quiz_dados = [
     {
         "question": "Qual é o elemento químico mais abundante da terra?",
@@ -84,7 +84,7 @@ quiz_dados = [
     },
 ]
 
-# --- Classe QuizApp (Sua tela do quiz) ---
+# --- Classe QuizApp (tela) ---
 class QuizApp:
     def __init__(self, master):
         self.master = master
@@ -108,8 +108,7 @@ class QuizApp:
         self.respondidas = 0
         self.total_perguntas = min(10, len(self.perguntas_disponiveis))
 
-        # CORREÇÕES DOS ERROS DE DIGITAÇÃO AQUI:
-        # grid_rowconfigure e grid_columnconfigure (todas as instâncias)
+        
         self.master.grid_rowconfigure(0, weight=0) 
         self.master.grid_rowconfigure(1, weight=1)
         self.master.grid_rowconfigure(2, weight=1)
@@ -131,7 +130,6 @@ class QuizApp:
         self.frame_opcoes = tk.Frame(self.master, bg="#f0f0f0")
         self.frame_opcoes.grid(row=3, column=0, pady=0)
 
-        # CORREÇÃO AQUI TAMBÉM: grid_columnconfigure
         self.frame_opcoes.grid_columnconfigure(0, weight=1) 
 
         self.var_opcao = tk.StringVar()
@@ -171,29 +169,26 @@ class QuizApp:
         indice_correto = self.pergunta_atual_obj["correct"]
         resposta_correta_texto = self.pergunta_atual_obj["options"][indice_correto]
 
-        # Início do código de feedback de cor que você quer adicionar/substituir
+        # Início do código de feedback de cor
         # Verifica qual botão de rádio foi selecionado e muda a cor
         for i, btn in enumerate(self.botoes_opcoes):
             if btn.cget("text") == resposta_selecionada_texto:
-                # É a resposta selecionada pelo usuário
+                # Resposta selecionada pelo usuário
                 if resposta_selecionada_texto == resposta_correta_texto:
-                    btn.config(bg="lightgreen") # Verde para correto
+                    btn.config(bg="lightgreen") 
                 else:
-                    btn.config(bg="red") # Vermelho para errado
-                # A linha abaixo 'self.resposta_usuario_btn = btn' não é estritamente necessária
-                # se você não planeja usar essa referência depois, mas manterei por consistência.
+                    btn.config(bg="red")
+                
                 self.resposta_usuario_btn = btn 
             
             # Garante que a opção correta sempre fique verde
-            # Esta condição foi ajustada ligeiramente para não sobrepor o vermelho
-            # se a resposta correta *também* foi a selecionada (já tratada acima).
             if btn.cget("text") == resposta_correta_texto and btn.cget("bg") != "red":
                  btn.config(bg="lightgreen")
 
-            btn.config(state=tk.DISABLED) # Desabilita todas as opções após a escolha
-        # Fim do código de feedback de cor
+            btn.config(state=tk.DISABLED) 
+    
 
-        # O restante da lógica de pontuação e avanço permanece o mesmo
+        #Tratamento da pontuação
         if not hasattr(self, '_answered_current_question') or not self._answered_current_question:
             if resposta_selecionada_texto == resposta_correta_texto:
                 self.pontuacao += 1
@@ -235,7 +230,7 @@ class QuizApp:
         self.var_opcao.set("")
         self.btn_proximo.config(state=tk.DISABLED)
 
-# --- Classe TelaInicial (Nova tela de apresentação do Quiz) ---
+# --- Classe TelaInicial 
 class StartScreen:
     def __init__(self, master):
         self.master = master
@@ -270,7 +265,7 @@ class StartScreen:
         QuizApp(quiz_window) # Inicia o quiz nessa nova janela
 
 
-# --- Funções de Cadastro/Login ---
+# --- Funções de Cadastro/Login
 def tela_cadastro():
     def salvar_cadastro():
         usuario = entry_usuario.get()
