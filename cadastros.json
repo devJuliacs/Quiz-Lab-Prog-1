@@ -13,5 +13,20 @@
         "usuario": "richele",
         "senha": "258",
         "email": "richele@gmail.com"
+    },
+    {
+        "usuario": "ANA",
+        "senha": "753",
+        "email": "ANA@EMAIL.COM"
+    },
+    {
+        "usuario": "MARIA",
+        "senha": "456",
+        "email": "MARIA@EMAIL.COM"
+    },
+    {
+        "usuario": "joana",
+        "senha": "963",
+        "email": "joana@email.com"
     }
 ]
