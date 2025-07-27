@@ -15,10 +15,16 @@ class QuizApp:
         
         self.quiz_logica = QuizLogica(perguntas)
         
-        # Configurações de janela
-        self.window_width = 600
-        self.window_height = 400
+        # Configurações de janela (Aumentamos)
+        self.window_width = 700
+        self.window_height = 500
         self.button_width = 35
+
+        self.master.configure(padx=20, pady=20)
+
+        # Configurar pesos das linhas para melhor distribuição
+        self.master.grid_rowconfigure(2, weight=1)  # Linha da pergunta
+        self.master.grid_rowconfigure(3, weight=2)  # Linha das opções
         
         # Centralizar janela
         screen_width = self.master.winfo_screenwidth()
@@ -78,19 +84,24 @@ class QuizApp:
                 value="", 
                 font=("Arial", 12), 
                 bg="#f0f0f0",
+                fg="black",
                 command=self.habilitar_proximo,
                 indicatoron=0,
                 width=self.button_width,
                 anchor="center",
                 padx=10,
                 pady=5,
-                relief="raised"
+                relief="raised",
+                activebackground="#3498db",  # Cor quando mouse está sobre
+                activeforeground="white"     # cor do texto quando o mouse está sobre
             )
             btn.grid(row=i, column=0, pady=5)
             self.botoes_opcoes.append(btn)
 
         self.btn_proximo = tk.Button(
-            self.master, 
+            self.master,
+            bg="#22382D",
+            fg="white",
             text="Próxima Pergunta", 
             font=("Arial", 12),
             command=self.verificar_e_avancar, 
@@ -116,10 +127,11 @@ class QuizApp:
 
         for btn in self.botoes_opcoes:
             if btn.cget("text") == resposta_selecionada_texto:
-                btn.config(bg="green" if resposta_correta else "red")
-            
+                btn.config(bg="#e74c3c" if not resposta_correta else "#2ecc71")  # Vermelho/Verde
+                btn.config(fg="white")
+        
             if btn.cget("text") == resposta_correta_texto:
-                btn.config(bg="lightgreen")
+                btn.config(bg="#2ecc71", fg="white")  # Verde para resposta correta
             
             btn.config(state=tk.DISABLED)
 
@@ -130,7 +142,11 @@ class QuizApp:
 
     def _avancar_apos_feedback(self):
         for btn in self.botoes_opcoes:
-            btn.config(bg="#f0f0f0", state=tk.NORMAL)
+            btn.config(
+                bg="#f0f0f0",  # Cor de fundo original
+                fg="black",    # Adicionado: cor do texto preta
+                state=tk.NORMAL
+            )
         self.proxima_pergunta()
 
     def proxima_pergunta(self):
