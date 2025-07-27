@@ -22,7 +22,7 @@ class QuizApp:
 
         self.master.configure(padx=20, pady=20)
 
-        # Configurar pesos das linhas para melhor distribuição
+        # Configurando pesos das linhas para melhor distribuição
         self.master.grid_rowconfigure(2, weight=1)  # Linha da pergunta
         self.master.grid_rowconfigure(3, weight=2)  # Linha das opções
         
