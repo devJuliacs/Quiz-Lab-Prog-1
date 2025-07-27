@@ -83,8 +83,8 @@ class QuizApp:
                 variable=self.var_opcao,
                 value="", 
                 font=("Arial", 12), 
-                bg="#f0f0f0",
-                fg="black",
+                bg="white",          # Fundo branco inicial
+                fg="black",          # Texto preto inicial
                 command=self.habilitar_proximo,
                 indicatoron=0,
                 width=self.button_width,
@@ -92,8 +92,8 @@ class QuizApp:
                 padx=10,
                 pady=5,
                 relief="raised",
-                activebackground="#3498db",  # Cor quando mouse está sobre
-                activeforeground="white"     # cor do texto quando o mouse está sobre
+                activebackground="#3498db",  # Cor quando pressionado
+                activeforeground="white"     # Texto quando pressionado
             )
             btn.grid(row=i, column=0, pady=5)
             self.botoes_opcoes.append(btn)
@@ -112,6 +112,8 @@ class QuizApp:
 
         self.proxima_pergunta()
 
+    
+
     def habilitar_proximo(self):
         self.btn_proximo.config(state=tk.NORMAL)
 
@@ -122,29 +124,45 @@ class QuizApp:
         if not self.quiz_logica.pergunta_atual_obj:
             return
 
-        resposta_correta = self.quiz_logica.verificar_resposta(resposta_selecionada_texto)
-        resposta_correta_texto = self.quiz_logica.pergunta_atual_obj["options"][self.quiz_logica.pergunta_atual_obj["correct"]]
-
-        for btn in self.botoes_opcoes:
-            if btn.cget("text") == resposta_selecionada_texto:
-                btn.config(bg="#e74c3c" if not resposta_correta else "#2ecc71")  # Vermelho/Verde
-                btn.config(fg="white")
+        # Obter índice e texto da resposta correta
+        indice_correto = self.quiz_logica.pergunta_atual_obj["correct"]
+        resposta_correta_texto = self.quiz_logica.pergunta_atual_obj["options"][indice_correto]
         
-            if btn.cget("text") == resposta_correta_texto:
-                btn.config(bg="#2ecc71", fg="white")  # Verde para resposta correta
+        # Verificar se a resposta está correta
+        resposta_correta = (resposta_selecionada_texto == resposta_correta_texto)
+        self.quiz_logica.verificar_resposta(resposta_selecionada_texto)
+
+        # Aplicar feedback visual
+        for btn in self.botoes_opcoes:
+            texto_botao = btn.cget("text")
             
+            # Resetar configurações visuais
+            btn.config(bg="white", fg="black", relief="raised")
+            
+            # Se for a resposta selecionada
+            if texto_botao == resposta_selecionada_texto:
+                btn.config(bg="#2ecc71" if resposta_correta else "#e74c3c", fg="white")
+            
+            # Se for a resposta correta (diferente da selecionada)
+            elif texto_botao == resposta_correta_texto and not resposta_correta:
+                btn.config(bg="#2ecc71", fg="white")
+            
+            # Desativar todos os botões
             btn.config(state=tk.DISABLED)
 
+        # Atualizar pontuação
         pontuacao = self.quiz_logica.obter_pontuacao()
         self.label_pontuacao.config(text=f"Pontuação: {pontuacao['pontuacao']}/{pontuacao['respondidas']}")
 
         self.master.after(2000, self._avancar_apos_feedback)
+               
 
     def _avancar_apos_feedback(self):
         for btn in self.botoes_opcoes:
             btn.config(
                 bg="#f0f0f0",  # Cor de fundo original
                 fg="black",    # Adicionado: cor do texto preta
+                relief="raised",
                 state=tk.NORMAL
             )
         self.proxima_pergunta()
@@ -260,21 +278,24 @@ def tela_cadastro():
     
     janela_cadastro = tk.Toplevel()
     janela_cadastro.title("Cadastro de Usuário")
-    janela_cadastro.geometry("300x200")
+    janela_cadastro.geometry("400x300")
+
+    frame_principal = tk.Frame(janela_cadastro, bg="#f0f0f0")
+    frame_principal.place(relx=0.5, rely=0.5, anchor="center")
     
-    tk.Label(janela_cadastro, text="Usuário:").pack()
-    entry_usuario = tk.Entry(janela_cadastro)
-    entry_usuario.pack()
+    tk.Label(frame_principal, text="Usuário:").pack(pady=(0,5))
+    entry_usuario = tk.Entry(frame_principal)
+    entry_usuario.pack(pady=5)
     
-    tk.Label(janela_cadastro, text="Senha:").pack()
+    tk.Label(frame_principal, text="Senha:").pack(pady=(0,5))
     entry_senha = tk.Entry(janela_cadastro, show="*")
-    entry_senha.pack()
+    entry_senha.pack(pady=5)
     
-    tk.Label(janela_cadastro, text="Email:").pack()
+    tk.Label(frame_principal, text="Email:").pack(pady=(0,5))
     entry_email = tk.Entry(janela_cadastro)
-    entry_email.pack()
+    entry_email.pack(pady=5)
     
-    tk.Button(janela_cadastro, text="Cadastrar", command=salvar_cadastro).pack(pady=10)
+    tk.Button(frame_principal, text="Cadastrar", command=salvar_cadastro).pack(pady=15)
 
 def tela_login():
     def verificar_login():
@@ -303,18 +324,24 @@ def tela_login():
     
     login_root = tk.Tk()
     login_root.title("Login")
-    login_root.geometry("300x150")
+    login_root.geometry("400x300")
+
+    frame_principal = tk.Frame(login_root, bg="#f0f0f0")
+    frame_principal.place(relx=0.5, rely=0.5, anchor="center")  # Centraliza o frame
     
-    tk.Label(login_root, text="Usuário:").pack()
-    entry_usuario = tk.Entry(login_root)
-    entry_usuario.pack()
+    tk.Label(frame_principal, text="Usuário:", bg="#f0f0f0").pack(pady=(0,5))
+    entry_usuario = tk.Entry(frame_principal)
+    entry_usuario.pack(pady=5)
     
-    tk.Label(login_root, text="Senha:").pack()
-    entry_senha = tk.Entry(login_root, show="*")
-    entry_senha.pack()
+    tk.Label(frame_principal, text="Senha:", bg="#f0f0f0").pack(pady=(0,5))
+    entry_senha = tk.Entry(frame_principal, show="*")    
+    entry_senha.pack(pady=5)
+
+    frame_botoes = tk.Frame(frame_principal, bg="#f0f0f0")
+    frame_botoes.pack(pady=15)
     
-    tk.Button(login_root, text="Entrar", command=verificar_login).pack(pady=10)
-    tk.Button(login_root, text="Cadastrar", command=tela_cadastro).pack()
+    tk.Button(frame_botoes, text="Entrar", command=verificar_login).pack(side="left", padx=10)
+    tk.Button(frame_botoes, text="Cadastrar", command=tela_cadastro).pack(side="left", padx=10)
     
     login_root.mainloop()
 
