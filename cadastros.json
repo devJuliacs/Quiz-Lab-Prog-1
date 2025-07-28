@@ -28,5 +28,10 @@
         "usuario": "joana",
         "senha": "963",
         "email": "joana@email.com"
+    },
+    {
+        "usuario": "karol",
+        "senha": "4561",
+        "email": "karol@email.com"
     }
 ]

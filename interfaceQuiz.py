@@ -278,24 +278,58 @@ def tela_cadastro():
     
     janela_cadastro = tk.Toplevel()
     janela_cadastro.title("Cadastro de Usuário")
-    janela_cadastro.geometry("400x300")
+    janela_cadastro.geometry("400x350")
+    janela_cadastro.configure(bg="#f0f0f0")
 
-    frame_principal = tk.Frame(janela_cadastro, bg="#f0f0f0")
+    # Definir as fontes antes de usar
+    fonte_label = ("Arial", 10)
+    fonte_entry = ("Arial", 11)
+
+    frame_principal = tk.Frame(janela_cadastro, bg="white", padx=20, pady=20)
     frame_principal.place(relx=0.5, rely=0.5, anchor="center")
-    
-    tk.Label(frame_principal, text="Usuário:").pack(pady=(0,5))
-    entry_usuario = tk.Entry(frame_principal)
-    entry_usuario.pack(pady=5)
-    
-    tk.Label(frame_principal, text="Senha:").pack(pady=(0,5))
-    entry_senha = tk.Entry(janela_cadastro, show="*")
-    entry_senha.pack(pady=5)
-    
-    tk.Label(frame_principal, text="Email:").pack(pady=(0,5))
-    entry_email = tk.Entry(janela_cadastro)
-    entry_email.pack(pady=5)
-    
-    tk.Button(frame_principal, text="Cadastrar", command=salvar_cadastro).pack(pady=15)
+
+    # Usuário
+    tk.Label(frame_principal, 
+             text="Usuário:", 
+             bg="white",
+             font=fonte_label).grid(row=0, column=0, pady=(0,5), sticky="w")
+    entry_usuario = tk.Entry(frame_principal, font=fonte_entry, width=25)
+    entry_usuario.grid(row=1, column=0, pady=(0,15), ipady=3)
+
+    # Senha
+    tk.Label(frame_principal, 
+             text="Senha:", 
+             bg="white",
+             font=fonte_label).grid(row=2, column=0, pady=(0,5), sticky="w")
+    entry_senha = tk.Entry(frame_principal, show="*", font=fonte_entry, width=25)
+    entry_senha.grid(row=3, column=0, pady=(0,15), ipady=3)
+
+    # Email
+    tk.Label(frame_principal, 
+             text="Email:", 
+             bg="white",
+             font=fonte_label).grid(row=4, column=0, pady=(0,5), sticky="w")
+    entry_email = tk.Entry(frame_principal, font=fonte_entry, width=25)
+    entry_email.grid(row=5, column=0, pady=(0,20), ipady=3)
+
+    # Botão Cadastrar
+    btn_cadastrar = tk.Button(frame_principal,
+                             text="Cadastrar",
+                             command=salvar_cadastro,
+                             bg="#4CAF50",
+                             fg="white",
+                             font=("Arial", 11, "bold"),
+                             padx=20,
+                             pady=5)
+    btn_cadastrar.grid(row=6, column=0, sticky="ew")
+
+    # Centralizar janela
+    janela_cadastro.update_idletasks()
+    largura = janela_cadastro.winfo_width()
+    altura = janela_cadastro.winfo_height()
+    x = (janela_cadastro.winfo_screenwidth() // 2) - (largura // 2)
+    y = (janela_cadastro.winfo_screenheight() // 2) - (altura // 2)
+    janela_cadastro.geometry(f"+{x}+{y}")
 
 def tela_login():
     def verificar_login():
